@@ -2,6 +2,8 @@ SYSTEM_MODE(MANUAL);
 SYSTEM_THREAD(ENABLED);
 
 int sensorValue = 0;
+uint16_t maxValue = 0;
+uint16_t minValue = 4095;
 
 void setup() {
   pinMode(A5, INPUT);
@@ -15,9 +17,9 @@ void loop() {
   // use the serial monitor to identify the max and min range
   Serial.println(sensorValue);
    // turn the led on to a brightness specified from the map function.
-  max(3485, sensorValue);
-  min(0, sensorValue);
-  analogWrite(D8, map(sensorValue, 0, 1023, 0, 255));
+  maxValue = max(maxValue, sensorValue);
+  minValue = min(minValue, sensorValue);
+  analogWrite(D8, map(sensorValue, minValue, maxValue, 0, 255));
   //I had delay in before to find the max and min ranges in the serial monitor, 
   //but I removed it because it would delay the led and looked weird.
   //No delay significantly decreases the delay in the change of brightness and looks much smoother overall.
